@@ -1,4 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { createConnection } from 'typeorm';
 
-@Module({})
+import { DBConnService } from './db.conn.service';
+
+@Global()
+@Module({
+  providers: [
+    {
+      provide: DBConnService,
+      useFactory: async (): Promise<DBConnService> =>
+        new DBConnService(await createConnection()),
+    },
+  ],
+  exports: [DBConnService],
+})
 export class DBModule {}
