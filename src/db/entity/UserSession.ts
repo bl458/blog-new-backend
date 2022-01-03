@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
 
 import { User } from './User';
 
+@Entity()
 export class UserSession {
   @PrimaryGeneratedColumn()
   id: number;

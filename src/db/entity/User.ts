@@ -1,12 +1,15 @@
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { Post } from './Post';
 
+@Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;

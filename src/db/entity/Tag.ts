@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
 
 import { Post } from './Post';
 
+@Entity()
 export class Tag {
   @PrimaryGeneratedColumn()
   id: number;
