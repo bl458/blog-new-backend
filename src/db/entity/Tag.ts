@@ -2,23 +2,23 @@ import {
   Column,
   CreateDateColumn,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { User } from './User';
+import { Post } from './Post';
 
-export class UserSession {
+export class Tag {
   @PrimaryGeneratedColumn()
   id: number;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ length: 256 })
-  token: string;
+  @Column({ nullable: false, unique: true })
+  name: string;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => Post, (post) => post.tags)
   @JoinColumn()
-  user: User;
+  post: Post;
 }
