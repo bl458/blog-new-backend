@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DBConnService } from 'src/db/db.conn.service';
 
+import { DBConnService } from 'src/db/db.conn.service';
 import { User } from 'src/db/entity/User';
 
 @Injectable()
