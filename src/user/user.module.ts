@@ -9,11 +9,11 @@ import { UserPostController } from './user.post.controller';
 
 import { UserService } from './user.service';
 import { UserSessionService } from './user.session.service';
-import { UserPostService } from './user.post.service';
+import { PostService } from 'src/post/post.service';
 
 @Module({
-  imports: [AuthModule, DBModule],
+  imports: [AuthModule, DBModule, PostService],
   controllers: [UserController, UserSessionController, UserPostController],
-  providers: [UserService, UserSessionService, UserPostService],
+  providers: [UserService, UserSessionService],
 })
 export class UserModule {}
