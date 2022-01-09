@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Param,
   Put,
   Session,
   UseGuards,
@@ -13,6 +14,8 @@ import { UserPostService } from './user.post.service';
 
 import { UserSession } from 'src/db/entity/UserSession';
 
+import { PostDTO } from 'src/dto/post.dto';
+
 @UseGuards(UserGuard)
 @Controller()
 export class UserPostController {
@@ -22,13 +25,16 @@ export class UserPostController {
   @Put('user/post')
   async editPost(
     @Session() session: UserSession,
-    @Body('post') postDTO,
+    @Body('post') postDTO: PostDTO,
   ): Promise<void> {
     return;
   }
 
   @Delete('user/post/:id')
-  async deletePost(): Promise<void> {
+  async deletePost(
+    @Session() session: UserSession,
+    @Param('id') id: string,
+  ): Promise<void> {
     return;
   }
 }
