@@ -11,6 +11,10 @@ import { PostDTO } from 'src/dto/post.dto';
 export class PostService {
   constructor(private conn: DBConnService) {}
 
+  async doGetPostPage(pageNo: number): Promise<Post[]> {
+    return [];
+  }
+
   async doEditPost(postDTO: PostDTO): Promise<void> {
     this.conn.getConn().transaction(async (mgr) => {
       const post = await mgr.findOne(Post, postDTO.id);
