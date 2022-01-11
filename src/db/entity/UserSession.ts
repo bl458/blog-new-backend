@@ -20,7 +20,7 @@ export class UserSession {
   createdAt: Date;
 
   @Index()
-  @Column({ length: 256 })
+  @Column({ length: 256, unique: true })
   token: string;
 
   @Index()

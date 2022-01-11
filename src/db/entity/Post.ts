@@ -21,13 +21,13 @@ export class Post {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @Column({ nullable: false, unique: true })
   title: string;
 
-  @Column()
+  @Column({ nullable: false })
   titleSub: string;
 
-  @Column()
+  @Column({ nullable: false })
   content: string;
 
   @Index()

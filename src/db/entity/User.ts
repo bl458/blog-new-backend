@@ -19,7 +19,7 @@ export class User {
   createdAt: Date;
 
   @Index()
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   email: string;
 
   @Column({ nullable: false })
