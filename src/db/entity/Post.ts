@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -16,6 +17,7 @@ export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index()
   @CreateDateColumn()
   createdAt: Date;
 
@@ -28,6 +30,7 @@ export class Post {
   @Column()
   content: string;
 
+  @Index()
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn()
   user: User;

@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -10,6 +11,7 @@ import {
 import { User } from './User';
 
 @Entity()
+@Index(['token', 'createdAt'])
 export class UserSession {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -17,9 +19,11 @@ export class UserSession {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Index()
   @Column({ length: 256 })
   token: string;
 
+  @Index()
   @OneToOne(() => User)
   @JoinColumn()
   user: User;

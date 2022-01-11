@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -17,6 +18,7 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Index()
   @Column({ nullable: false })
   email: string;
 
