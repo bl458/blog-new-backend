@@ -32,6 +32,10 @@ export class PostService {
   async doEditPost(postDTO: PostDTO): Promise<void> {
     this.conn.getConn().transaction(async (mgr) => {
       const post = await mgr.findOne(Post, postDTO.id);
+      if (post) {
+        await mgr.remove(post);
+      }
+
       await mgr.save({ ...post, ...instanceToPlain(postDTO) });
     });
   }
