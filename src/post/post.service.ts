@@ -38,7 +38,7 @@ export class PostService {
 
   async doDeletePost(id: string): Promise<void> {
     this.conn.getConn().transaction(async (mgr) => {
-      const post = await mgr.findOne(Post, id);
+      const post = await mgr.findOne(Post, { select: ['id'], where: { id } });
       if (!post) {
         throw new BadRequestException('bad post id');
       }

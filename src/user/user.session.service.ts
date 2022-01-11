@@ -12,7 +12,10 @@ export class UserSessionService {
 
   async doLogin(email: string, pw: string): Promise<string> {
     return this.conn.getConn().transaction(async (mgr) => {
-      const user = await mgr.findOne(User, { email });
+      const user = await mgr.findOne(User, {
+        select: ['id', 'pw'],
+        where: { email },
+      });
       if (!user) {
         throw new BadRequestException('email not exist');
       }
