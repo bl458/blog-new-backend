@@ -19,9 +19,10 @@ export class UserGuard implements CanActivate {
         where: { token, createdAt: MoreThan(Date.now() - TOKEN_EXPIRY) },
       });
     });
-    if (!session) return false;
+    // if (!session) return false;
 
-    context.switchToHttp().getRequest().session = session;
-    return true;
+    // context.switchToHttp().getRequest().session = session;
+    // return true;
+    return !!session;
   }
 }
