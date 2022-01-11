@@ -19,12 +19,11 @@ export class UserSession {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Index()
   @Column({ length: 256, unique: true })
   token: string;
 
   @Index()
-  @OneToOne(() => User)
+  @OneToOne(() => User, (user) => user.session)
   @JoinColumn()
   user: User;
 }
