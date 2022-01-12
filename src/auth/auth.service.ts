@@ -11,7 +11,7 @@ export class AuthService {
   async generateToken(): Promise<string> {
     return new Promise((resolve, reject) =>
       randomBytes(TOKEN_BYTES, (err, buf) =>
-        err ? reject(err) : resolve(buf.toString()),
+        err ? reject(err) : resolve(buf.toString('hex')),
       ),
     );
   }
