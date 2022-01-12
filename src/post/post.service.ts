@@ -4,6 +4,7 @@ import { instanceToPlain } from 'class-transformer';
 import { DBConnService } from 'src/db/db.conn.service';
 
 import { Post } from 'src/db/entity/Post';
+import { UserSession } from 'src/db/entity/UserSession';
 
 import { PostDTO } from 'src/dto/post.dto';
 
@@ -29,14 +30,18 @@ export class PostService {
     });
   }
 
-  async doEditPost(postDTO: PostDTO): Promise<void> {
+  async doEditPost(session: UserSession, postDTO: PostDTO): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
-      const post = await mgr.findOne(Post, postDTO.id);
-      if (post) {
-        await mgr.remove(post);
+      let post = await mgr.findOne(Post, { id: postDTO.id });
+      console.log(post);
+      if (!post) {
+        // console.log('#####################Entered if');
+        post = new Post();
+        post.user = session.user;
       }
 
-      await mgr.save({ ...post, ...instanceToPlain(postDTO) });
+      post = Object.assign(post, instanceToPlain(postDTO));
+      await mgr.save(post);
     });
   }
 

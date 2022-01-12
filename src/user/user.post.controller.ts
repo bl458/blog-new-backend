@@ -4,6 +4,7 @@ import {
   Delete,
   Param,
   Put,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 
@@ -13,6 +14,8 @@ import { PostService } from '../post/post.service';
 
 import { PostDTO } from 'src/dto/post.dto';
 
+import { UserSession } from 'src/db/entity/UserSession';
+
 @UseGuards(UserGuard)
 @Controller()
 export class UserPostController {
@@ -20,8 +23,11 @@ export class UserPostController {
 
   //TBI post's tag
   @Put('user/post')
-  async editPost(@Body('post') postDTO: PostDTO): Promise<void> {
-    return this.pService.doEditPost(postDTO);
+  async editPost(
+    @Session() session: UserSession,
+    @Body('post') postDTO: PostDTO,
+  ): Promise<void> {
+    return this.pService.doEditPost(session, postDTO);
   }
 
   @Delete('user/post/:id')

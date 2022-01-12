@@ -15,14 +15,18 @@ export class UserGuard implements CanActivate {
     const token = context.switchToHttp().getRequest().header('api-token');
     const session = await this.conn.getConn().transaction(async (mgr) => {
       return await mgr.findOne(UserSession, {
-        select: ['id'],
+        select: ['id', 'user'],
         where: { token, createdAt: MoreThan(Date.now() - TOKEN_EXPIRY) },
+        relations: ['user'],
       });
     });
-    // if (!session) return false;
 
-    // context.switchToHttp().getRequest().session = session;
-    // return true;
-    return !!session;
+    if (!session) {
+      return false;
+    }
+
+    context.switchToHttp().getRequest().session = session;
+    return true;
+    // return !!session;
   }
 }
