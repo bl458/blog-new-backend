@@ -41,7 +41,7 @@ export class UserSessionService {
   }
 
   async doLogout(token: string): Promise<void> {
-    this.conn.getConn().transaction(async (mgr) => {
+    return this.conn.getConn().transaction(async (mgr) => {
       const session = await mgr.findOne(UserSession, {
         select: ['id'],
         where: { token },
