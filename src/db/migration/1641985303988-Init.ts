@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class init1641887477605 implements MigrationInterface {
-  name = 'init1641887477605';
+export class Init1641985303988 implements MigrationInterface {
+  name = 'Init1641985303988';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -14,7 +14,7 @@ export class init1641887477605 implements MigrationInterface {
       `CREATE TABLE \`user\` (\`id\` varchar(36) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`email\` varchar(255) NOT NULL, \`pw\` varchar(255) NOT NULL, UNIQUE INDEX \`IDX_e12875dfb3b1d92d7d7c5377e2\` (\`email\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
     );
     await queryRunner.query(
-      `CREATE TABLE \`post\` (\`id\` varchar(36) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`title\` varchar(255) NOT NULL, \`titleSub\` varchar(255) NOT NULL, \`content\` varchar(255) NOT NULL, \`userId\` varchar(36) NULL, INDEX \`IDX_fb91bea2d37140a877b775e6b2\` (\`createdAt\`), INDEX \`IDX_5c1cf55c308037b5aca1038a13\` (\`userId\`), UNIQUE INDEX \`IDX_e28aa0c4114146bfb1567bfa9a\` (\`title\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+      `CREATE TABLE \`post\` (\`id\` varchar(36) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`title\` varchar(255) NOT NULL, \`titleSub\` varchar(255) NOT NULL, \`content\` varchar(255) NOT NULL, \`userId\` varchar(36) NULL, INDEX \`IDX_fb91bea2d37140a877b775e6b2\` (\`createdAt\`), INDEX \`IDX_5c1cf55c308037b5aca1038a13\` (\`userId\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
     );
     await queryRunner.query(
       `ALTER TABLE \`tag\` ADD CONSTRAINT \`FK_7435e891c35f2687d7969490476\` FOREIGN KEY (\`postId\`) REFERENCES \`post\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -40,9 +40,6 @@ export class init1641887477605 implements MigrationInterface {
     );
     await queryRunner.query(
       `ALTER TABLE \`tag\` DROP FOREIGN KEY \`FK_7435e891c35f2687d7969490476\``,
-    );
-    await queryRunner.query(
-      `DROP INDEX \`IDX_e28aa0c4114146bfb1567bfa9a\` ON \`post\``,
     );
     await queryRunner.query(
       `DROP INDEX \`IDX_5c1cf55c308037b5aca1038a13\` ON \`post\``,
