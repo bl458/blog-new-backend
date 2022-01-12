@@ -1,19 +1,22 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsDefined, IsOptional, IsString, ValidateIf } from 'class-validator';
 
 export class PostDTO {
   @IsOptional()
   @IsString()
   readonly id: string;
 
-  @IsOptional()
+  @ValidateIf((dto) => !dto.id)
+  @IsDefined()
   @IsString()
   readonly title: string;
 
-  @IsOptional()
+  @ValidateIf((dto) => !dto.id)
+  @IsDefined()
   @IsString()
   readonly titleSub: string;
 
-  @IsOptional()
+  @ValidateIf((dto) => !dto.id)
+  @IsDefined()
   @IsString()
   readonly content: string;
 }

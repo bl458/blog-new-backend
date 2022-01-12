@@ -32,10 +32,15 @@ export class PostService {
 
   async doEditPost(session: UserSession, postDTO: PostDTO): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
-      let post = await mgr.findOne(Post, { id: postDTO.id });
-      console.log(post);
+      let post = await mgr.findOne(Post, {
+        select: ['id'],
+        where: { id: postDTO.id },
+      });
       if (!post) {
-        // console.log('#####################Entered if');
+        if (postDTO.id != undefined) {
+          throw new BadRequestException('bad post id');
+        }
+
         post = new Post();
         post.user = session.user;
       }
