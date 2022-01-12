@@ -13,7 +13,7 @@ export class UserGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const token = context.switchToHttp().getRequest().header('api-token');
-    const session = await this.conn.getConn().transaction(async (mgr) => {
+    return await this.conn.getConn().transaction(async (mgr) => {
       const now = Date.now();
       const session = await mgr.findOne(UserSession, {
         select: ['id', 'user'],
@@ -24,15 +24,14 @@ export class UserGuard implements CanActivate {
         relations: ['user'],
       });
 
+      if (!session) {
+        return false;
+      }
+
+      context.switchToHttp().getRequest().session = session;
       session.lastUsedAt = new Date(now);
-      return session;
+      await mgr.save(session);
+      return true;
     });
-
-    if (!session) {
-      return false;
-    }
-
-    context.switchToHttp().getRequest().session = session;
-    return true;
   }
 }
