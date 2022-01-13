@@ -14,12 +14,11 @@ export class UserGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const token = context.switchToHttp().getRequest().header('api-token');
     return await this.conn.getConn().transaction(async (mgr) => {
-      const now = Date.now();
       const session = await mgr.findOne(UserSession, {
         select: ['id', 'user'],
         where: {
           token,
-          lastUsedAt: MoreThan(new Date(now - UserGuard.TOKEN_EXPIRY)),
+          createdAt: MoreThan(new Date(Date.now() - UserGuard.TOKEN_EXPIRY)),
         },
         relations: ['user'],
       });
@@ -29,8 +28,6 @@ export class UserGuard implements CanActivate {
       }
 
       context.switchToHttp().getRequest().session = session;
-      session.lastUsedAt = new Date(now);
-      await mgr.save(session);
       return true;
     });
   }
