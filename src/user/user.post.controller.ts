@@ -12,7 +12,7 @@ import { UserGuard } from './user.guard';
 
 import { PostService } from '../post/post.service';
 
-import { PostDTO } from 'src/dto/post.dto';
+import { CreatePostDTO } from 'src/dto/createPost.dto';
 
 import { UserSession } from 'src/db/entity/UserSession';
 
@@ -21,12 +21,15 @@ import { UserSession } from 'src/db/entity/UserSession';
 export class UserPostController {
   constructor(private pService: PostService) {}
 
+  @Post('user/post')
+  async createPost(
+    @Session() session: UserSession,
+    postDTO: CreatePostDTO,
+  ): Promise<void> {}
+
   //TBI post's tag
   @Put('user/post')
-  async editPost(
-    @Session() session: UserSession,
-    @Body('post') postDTO: PostDTO,
-  ): Promise<void> {
+  async editPost(@Body('post') postDTO: PostDTO): Promise<void> {
     return this.pService.doEditPost(session, postDTO);
   }
 

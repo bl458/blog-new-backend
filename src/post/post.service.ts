@@ -6,7 +6,8 @@ import { DBConnService } from 'src/db/db.conn.service';
 import { Post } from 'src/db/entity/Post';
 import { UserSession } from 'src/db/entity/UserSession';
 
-import { PostDTO } from 'src/dto/post.dto';
+import { CreatePostDTO } from 'src/dto/createPost.dto';
+import { EditPostDTO } from 'src/dto/editPost.dto';
 
 @Injectable()
 export class PostService {
