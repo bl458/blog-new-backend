@@ -6,7 +6,7 @@ import { DBConnService } from 'src/db/db.conn.service';
 import { UserSession } from 'src/db/entity/UserSession';
 
 @Injectable()
-export class UserGuard implements CanActivate {
+export class UsersGuard implements CanActivate {
   static TOKEN_EXPIRY = 1800000; // 30 min
 
   constructor(private conn: DBConnService) {}
@@ -18,7 +18,7 @@ export class UserGuard implements CanActivate {
         select: ['id', 'user'],
         where: {
           token,
-          createdAt: MoreThan(new Date(Date.now() - UserGuard.TOKEN_EXPIRY)),
+          createdAt: MoreThan(new Date(Date.now() - UsersGuard.TOKEN_EXPIRY)),
         },
         relations: ['user'],
       });

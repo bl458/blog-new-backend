@@ -10,7 +10,7 @@ import { CreatePostDTO } from 'src/dto/createPost.dto';
 import { EditPostDTO } from 'src/dto/editPost.dto';
 
 @Injectable()
-export class PostService {
+export class PostsService {
   static CACHE_DURATION = 86400000; //1 day
   static PAGE_SIZE = 5;
 
@@ -22,11 +22,11 @@ export class PostService {
         .createQueryBuilder(Post, 'post')
         .select(['post.id', 'post.title', 'post.titleSub', 'post.content'])
         .orderBy('post.createdAt', 'DESC')
-        .cache(PostService.CACHE_DURATION)
+        .cache(PostsService.CACHE_DURATION)
         .getMany();
 
-      const pageStart = pageNo * PostService.PAGE_SIZE;
-      const pageEnd = (pageNo + 1) * PostService.PAGE_SIZE;
+      const pageStart = pageNo * PostsService.PAGE_SIZE;
+      const pageEnd = (pageNo + 1) * PostsService.PAGE_SIZE;
       return posts.slice(pageStart, pageEnd);
     });
   }

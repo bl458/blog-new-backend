@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 
-import { UserSessionService } from './user.session.service';
+import { UsersSessionService } from './users.session.service';
 
 @Controller()
-export class UserSessionController {
-  constructor(private uSService: UserSessionService) {}
+export class UsersSessionController {
+  constructor(private uSService: UsersSessionService) {}
 
-  @Post('user/session')
+  @Post('users/sessions')
   async login(
     @Body('email') email: string,
     @Body('pw') pw: string,
@@ -14,7 +14,7 @@ export class UserSessionController {
     return this.uSService.doLogin(email, pw);
   }
 
-  @Delete('user/session/:token')
+  @Delete('users/sessions/:token')
   async logout(@Param('token') token: string): Promise<void> {
     return this.uSService.doLogout(token);
   }

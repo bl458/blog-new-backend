@@ -1,14 +1,14 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
-import { PostService } from './post.service';
+import { PostsService } from './posts.service';
 
 import { Post } from 'src/db/entity/Post';
 
 @Controller()
-export class PostController {
-  constructor(private pService: PostService) {}
+export class PostsController {
+  constructor(private pService: PostsService) {}
 
-  @Get('post/:page')
+  @Get('posts/:page')
   async getPostPage(@Param('page') pageNo: number): Promise<Post[]> {
     return this.pService.doGetPostPage(pageNo);
   }

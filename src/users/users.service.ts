@@ -7,7 +7,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { User } from 'src/db/entity/User';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(private conn: DBConnService, private auth: AuthService) {}
 
   async createUser(email: string, pw: string): Promise<User> {

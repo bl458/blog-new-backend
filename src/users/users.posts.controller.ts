@@ -9,21 +9,21 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { UserGuard } from './user.guard';
+import { UsersGuard } from './users.guard';
 
-import { PostService } from '../post/post.service';
+import { PostsService } from '../posts/posts.service';
 
 import { UserSession } from 'src/db/entity/UserSession';
 
 import { CreatePostDTO } from 'src/dto/createPost.dto';
 import { EditPostDTO } from 'src/dto/editPost.dto';
 
-@UseGuards(UserGuard)
+@UseGuards(UsersGuard)
 @Controller()
-export class UserPostController {
-  constructor(private pService: PostService) {}
+export class UsersPostsController {
+  constructor(private pService: PostsService) {}
 
-  @Post('user/post')
+  @Post('users/posts')
   async createPost(
     @Session() session: UserSession,
     @Body('post') createPostDTO: CreatePostDTO,
@@ -32,7 +32,7 @@ export class UserPostController {
   }
 
   //TBI post's tag
-  @Put('user/post')
+  @Put('users/posts')
   async editPost(
     @Session() session: UserSession,
     @Body('post') editPostDTO: EditPostDTO,
@@ -40,7 +40,7 @@ export class UserPostController {
     return this.pService.doEditPost(session, editPostDTO);
   }
 
-  @Delete('user/post/:id')
+  @Delete('users/posts/:id')
   async deletePost(@Param('id') id: string): Promise<void> {
     return this.pService.doDeletePost(id);
   }

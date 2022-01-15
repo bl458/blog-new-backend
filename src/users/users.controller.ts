@@ -1,13 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
 import { User } from 'src/db/entity/User';
-import { UserService } from './user.service';
+import { UsersService } from './users.service';
 
 @Controller()
-export class UserController {
-  constructor(private uService: UserService) {}
+export class UsersController {
+  constructor(private uService: UsersService) {}
 
-  @Post('user')
+  @Post('users')
   async signup(
     @Body('email') email: string,
     @Body('pw') pw: string,
