@@ -33,8 +33,11 @@ export class UserPostController {
 
   //TBI post's tag
   @Put('user/post')
-  async editPost(@Body('post') editPostDTO: EditPostDTO): Promise<void> {
-    return this.pService.doEditPost(editPostDTO);
+  async editPost(
+    @Session() session: UserSession,
+    @Body('post') editPostDTO: EditPostDTO,
+  ): Promise<void> {
+    return this.pService.doEditPost(session, editPostDTO);
   }
 
   @Delete('user/post/:id')

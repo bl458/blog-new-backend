@@ -42,15 +42,18 @@ export class PostService {
     });
   }
 
-  async doEditPost(editPostDTO: EditPostDTO): Promise<void> {
+  async doEditPost(
+    session: UserSession,
+    editPostDTO: EditPostDTO,
+  ): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
       let post = await mgr.findOne(Post, {
         select: ['id'],
-        where: { id: editPostDTO.id },
+        where: { id: editPostDTO.id, user: session.user },
       });
 
       if (!post) {
-        throw new BadRequestException('bad post id');
+        throw new BadRequestException('no post id with this user');
       }
 
       post = Object.assign(post, instanceToPlain(editPostDTO));
