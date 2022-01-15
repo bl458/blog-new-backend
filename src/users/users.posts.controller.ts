@@ -41,7 +41,10 @@ export class UsersPostsController {
   }
 
   @Delete('users/posts/:id')
-  async deletePost(@Param('id') id: string): Promise<void> {
-    return this.pService.doDeletePost(id);
+  async deletePost(
+    @Session() session: UserSession,
+    @Param('id') id: string,
+  ): Promise<void> {
+    return this.pService.doDeletePost(session, id);
   }
 }

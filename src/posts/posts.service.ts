@@ -61,11 +61,15 @@ export class PostsService {
     });
   }
 
-  async doDeletePost(id: string): Promise<void> {
+  async doDeletePost(session: UserSession, id: string): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
-      const post = await mgr.findOne(Post, { select: ['id'], where: { id } });
+      const post = await mgr.findOne(Post, {
+        select: ['id'],
+        where: { id, user: session.user },
+      });
+
       if (!post) {
-        throw new BadRequestException('bad post id');
+        throw new BadRequestException('no post id with this user');
       }
 
       await mgr.remove(post);
