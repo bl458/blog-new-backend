@@ -1,19 +1,27 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateIf } from 'class-validator';
 
 export class EditPostDTO {
-  @IsOptional()
-  @IsString()
+  @IsNotEmpty()
   readonly id: string;
 
-  @IsOptional()
+  @ValidateIf(
+    (dto) => dto['titleSub'] === undefined && dto['content'] === undefined,
+  )
+  @IsNotEmpty()
   @IsString()
   readonly title: string;
 
-  @IsOptional()
+  @ValidateIf(
+    (dto) => dto['title'] === undefined && dto['content'] === undefined,
+  )
+  @IsNotEmpty()
   @IsString()
   readonly titleSub: string;
 
-  @IsOptional()
+  @ValidateIf(
+    (dto) => dto['title'] === undefined && dto['titleSub'] === undefined,
+  )
+  @IsNotEmpty()
   @IsString()
   readonly content: string;
 }

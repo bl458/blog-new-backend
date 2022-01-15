@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { instanceToPlain } from 'class-transformer';
+import { instanceToPlain, plainToClass } from 'class-transformer';
 
 import { DBConnService } from 'src/db/db.conn.service';
 
@@ -31,22 +31,29 @@ export class PostService {
     });
   }
 
-  async doEditPost(session: UserSession, postDTO: PostDTO): Promise<void> {
+  async doCreatePost(
+    session: UserSession,
+    createPostDTO: CreatePostDTO,
+  ): Promise<void> {
+    return this.conn.getConn().transaction(async (mgr) => {
+      const post = plainToClass(Post, instanceToPlain(createPostDTO));
+      post.user = session.user;
+      await mgr.save(post);
+    });
+  }
+
+  async doEditPost(editPostDTO: EditPostDTO): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
       let post = await mgr.findOne(Post, {
         select: ['id'],
-        where: { id: postDTO.id },
+        where: { id: editPostDTO.id },
       });
-      if (!post) {
-        if (postDTO.id != undefined) {
-          throw new BadRequestException('bad post id');
-        }
 
-        post = new Post();
-        post.user = session.user;
+      if (!post) {
+        throw new BadRequestException('bad post id');
       }
 
-      post = Object.assign(post, instanceToPlain(postDTO));
+      post = Object.assign(post, instanceToPlain(editPostDTO));
       await mgr.save(post);
     });
   }

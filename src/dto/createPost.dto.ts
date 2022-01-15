@@ -1,15 +1,15 @@
-import { IsDefined, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePostDTO {
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   readonly title: string;
 
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   readonly titleSub: string;
 
-  @IsDefined()
+  @IsNotEmpty()
   @IsString()
   readonly content: string;
 }
