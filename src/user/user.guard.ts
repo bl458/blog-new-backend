@@ -7,7 +7,7 @@ import { UserSession } from 'src/db/entity/UserSession';
 
 @Injectable()
 export class UserGuard implements CanActivate {
-  static TOKEN_EXPIRY = 180000; // 30 min
+  static TOKEN_EXPIRY = 1800000; // 30 min
 
   constructor(private conn: DBConnService) {}
 
