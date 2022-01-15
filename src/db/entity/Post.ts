@@ -13,6 +13,7 @@ import { Tag } from './Tag';
 import { User } from './User';
 
 @Entity()
+@Index(['id', 'user'])
 export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -30,7 +31,6 @@ export class Post {
   @Column({ nullable: false })
   content: string;
 
-  @Index()
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn()
   user: User;
