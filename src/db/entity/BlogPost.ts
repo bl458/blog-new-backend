@@ -14,7 +14,7 @@ import { User } from './User';
 
 @Entity()
 @Index(['id', 'user'])
-export class Post {
+export class BlogPost {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -31,11 +31,11 @@ export class Post {
   @Column({ nullable: false })
   content: string;
 
-  @ManyToOne(() => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.blogPosts)
   @JoinColumn()
   user: User;
 
-  @OneToMany(() => Tag, (tag) => tag.post)
+  @OneToMany(() => Tag, (tag) => tag.blogPost)
   @JoinColumn()
   tags: Tag[];
 }

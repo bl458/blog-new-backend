@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Post } from './Post';
+import { BlogPost } from './BlogPost';
 
 @Entity()
 export class Tag {
@@ -20,7 +20,7 @@ export class Tag {
   @Column({ nullable: false, unique: true })
   name: string;
 
-  @ManyToOne(() => Post, (post) => post.tags)
+  @ManyToOne(() => BlogPost, (blogPost) => blogPost.tags)
   @JoinColumn()
-  post: Post;
+  blogPost: BlogPost;
 }

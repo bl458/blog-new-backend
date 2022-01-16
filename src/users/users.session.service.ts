@@ -34,7 +34,7 @@ export class UsersSessionService {
 
       const newSession = new UserSession();
       newSession.user = user;
-      newSession.token = await this.auth.generateToken(); //TBI consider when dup token for different session objs
+      newSession.token = await this.auth.generateToken();
       await mgr.save(newSession);
       return newSession.token;
     });

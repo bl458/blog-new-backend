@@ -3,7 +3,7 @@ import { instanceToPlain, plainToClass } from 'class-transformer';
 
 import { DBConnService } from 'src/db/db.conn.service';
 
-import { Post } from 'src/db/entity/Post';
+import { BlogPost } from 'src/db/entity/BlogPost';
 import { UserSession } from 'src/db/entity/UserSession';
 
 import { CreatePostDTO } from 'src/dto/createPost.dto';
@@ -16,12 +16,17 @@ export class PostsService {
 
   constructor(private conn: DBConnService) {}
 
-  async doGetPostPage(pageNo: number): Promise<Post[]> {
+  async doGetPostPage(pageNo: number): Promise<BlogPost[]> {
     return this.conn.getConn().transaction(async (mgr) => {
       const posts = await mgr
-        .createQueryBuilder(Post, 'post')
-        .select(['post.id', 'post.title', 'post.titleSub', 'post.content'])
-        .orderBy('post.createdAt', 'DESC')
+        .createQueryBuilder(BlogPost, 'blogPost')
+        .select([
+          'blogPost.id',
+          'blogPost.title',
+          'blogPost.titleSub',
+          'blogPost.content',
+        ])
+        .orderBy('blogPost.createdAt', 'DESC')
         .cache(PostsService.CACHE_DURATION)
         .getMany();
 
@@ -36,7 +41,7 @@ export class PostsService {
     createPostDTO: CreatePostDTO,
   ): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
-      const post = plainToClass(Post, instanceToPlain(createPostDTO));
+      const post = plainToClass(BlogPost, instanceToPlain(createPostDTO));
       post.user = session.user;
       await mgr.save(post);
     });
@@ -47,7 +52,7 @@ export class PostsService {
     editPostDTO: EditPostDTO,
   ): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
-      let post = await mgr.findOne(Post, {
+      let post = await mgr.findOne(BlogPost, {
         select: ['id'],
         where: { id: editPostDTO.id, user: session.user },
       });
@@ -63,7 +68,7 @@ export class PostsService {
 
   async doDeletePost(session: UserSession, id: string): Promise<void> {
     return this.conn.getConn().transaction(async (mgr) => {
-      const post = await mgr.findOne(Post, {
+      const post = await mgr.findOne(BlogPost, {
         select: ['id'],
         where: { id, user: session.user },
       });

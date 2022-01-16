@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Post } from './Post';
+import { BlogPost } from './BlogPost';
 import { UserSession } from './UserSession';
 
 @Entity()
@@ -27,6 +27,6 @@ export class User {
   @OneToOne(() => UserSession, (session) => session.user)
   session: UserSession;
 
-  @OneToMany(() => Post, (post) => post.user)
-  posts: Post[];
+  @OneToMany(() => BlogPost, (blogPost) => blogPost.user)
+  blogPosts: BlogPost[];
 }
