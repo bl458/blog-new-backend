@@ -5,6 +5,8 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 
+import validator from 'validator';
+
 @Injectable()
 export class EmailPipe implements PipeTransform {
   transform(val: any, { metatype, data }: ArgumentMetadata) {
