@@ -8,7 +8,7 @@ import {
 import validator from 'validator';
 
 @Injectable()
-export class EmailPipe implements PipeTransform {
+export class TokenPipe implements PipeTransform {
   transform(val: any, { metatype, data }: ArgumentMetadata): string {
     if (val === undefined) {
       throw new BadRequestException(`${data} must be defined`);
@@ -24,8 +24,14 @@ export class EmailPipe implements PipeTransform {
       );
     }
 
-    if (!validator.isEmail(val)) {
-      throw new BadRequestException(`${data} must be an email`);
+    if (!validator.isAlphanumeric(val)) {
+      throw new BadRequestException(`${data} must be alphanumeric`);
+    }
+
+    if (val.length !== 256) {
+      throw new BadRequestException(
+        `${data} must be 256 length. Got ${val.length}`,
+      );
     }
 
     return val;
