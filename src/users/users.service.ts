@@ -1,5 +1,4 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { QueryFailedError } from 'typeorm';
 
 import { DBConnService } from 'src/db/db.conn.service';
 import { AuthService } from 'src/auth/auth.service';
@@ -18,8 +17,8 @@ export class UsersService {
       try {
         await mgr.save(user);
         return user;
-      } catch (err) {
-        if (err instanceof QueryFailedError) {
+      } catch (err: any) {
+        if (err.code === 'ER_DUP_ENTRY') {
           throw new BadRequestException('email already exists');
         }
 
