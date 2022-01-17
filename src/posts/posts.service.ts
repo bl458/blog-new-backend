@@ -27,7 +27,7 @@ export class PostsService {
           'blogPost.content',
         ])
         .orderBy('blogPost.createdAt', 'DESC')
-        .cache(PostsService.CACHE_DURATION)
+        .cache('post_cache', PostsService.CACHE_DURATION)
         .getMany();
 
       const pageStart = pageNo * PostsService.PAGE_SIZE;
@@ -40,6 +40,7 @@ export class PostsService {
     session: UserSession,
     createPostDTO: CreatePostDTO,
   ): Promise<void> {
+    await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
       const post = plainToClass(BlogPost, instanceToPlain(createPostDTO));
       post.user = session.user;
@@ -51,6 +52,7 @@ export class PostsService {
     session: UserSession,
     editPostDTO: EditPostDTO,
   ): Promise<void> {
+    await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
       let post = await mgr.findOne(BlogPost, {
         select: ['id'],
@@ -67,6 +69,7 @@ export class PostsService {
   }
 
   async doDeletePost(session: UserSession, id: string): Promise<void> {
+    await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
       const post = await mgr.findOne(BlogPost, {
         select: ['id'],
