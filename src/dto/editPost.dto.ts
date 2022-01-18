@@ -4,17 +4,29 @@ export class EditPostDTO {
   @IsNotEmpty()
   readonly id: string;
 
-  @ValidateIf((dto) => dto.title || (!dto.titleSub && !dto.content))
+  @ValidateIf(
+    (dto) =>
+      dto.title !== undefined ||
+      (dto.titleSub === undefined && dto.content === undefined),
+  )
   @IsNotEmpty()
   @IsString()
   readonly title: string;
 
-  @ValidateIf((dto) => dto.titleSub || (!dto.title && !dto.content))
+  @ValidateIf(
+    (dto) =>
+      dto.titleSub !== undefined ||
+      (dto.title === undefined && dto.content === undefined),
+  )
   @IsNotEmpty()
   @IsString()
   readonly titleSub: string;
 
-  @ValidateIf((dto) => dto.content || (!dto.title && !dto.titleSub))
+  @ValidateIf(
+    (dto) =>
+      dto.content !== undefined ||
+      (dto.title === undefined && dto.titleSub === undefined),
+  )
   @IsNotEmpty()
   @IsString()
   readonly content: string;
