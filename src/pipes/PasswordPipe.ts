@@ -9,8 +9,8 @@ import {
 @Injectable()
 export class PasswordPipe implements PipeTransform {
   transform(val: any, { metatype, data }: ArgumentMetadata): string {
-    if (val === undefined) {
-      throw new BadRequestException(`${data} must be defined`);
+    if (val == null) {
+      throw new BadRequestException(`${data} must be defined & not null`);
     }
 
     if (metatype !== String) {

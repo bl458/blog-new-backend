@@ -12,13 +12,13 @@ export class IntegerPipe implements PipeTransform {
 
   constructor(minMax: any) {
     const { min, max } = minMax;
-    this.min = min !== undefined ? min : Number.MIN_SAFE_INTEGER;
-    this.max = max !== undefined ? max : Number.MAX_SAFE_INTEGER;
+    this.min = min != null ? min : Number.MIN_SAFE_INTEGER;
+    this.max = max != null ? max : Number.MAX_SAFE_INTEGER;
   }
 
   transform(val: any, { metatype, data }: ArgumentMetadata): number {
-    if (val === undefined) {
-      throw new BadRequestException(`${data} must be defined`);
+    if (val == null) {
+      throw new BadRequestException(`${data} must be defined & not null`);
     }
 
     if (metatype !== Number) {
