@@ -10,7 +10,12 @@ export class TagsService {
 
   //TBI implement
   async doGetAllTags(): Promise<Tag[]> {
-    return [];
+    return this.conn
+      .getConn()
+      .createQueryBuilder()
+      .select('tag')
+      .from(Tag, 'tag')
+      .getMany();
   }
 
   //TBI implement
