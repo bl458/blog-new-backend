@@ -22,9 +22,4 @@ export class TagsService {
   async searchTags(keyword: string): Promise<Tag[]> {
     return [];
   }
-
-  //TBI implement
-  async doCreateTags(tagNames: string[]): Promise<Tag[]> {
-    return [];
-  }
 }
