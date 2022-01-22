@@ -4,8 +4,9 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -35,7 +36,10 @@ export class BlogPost {
   @JoinColumn()
   user: User;
 
-  @OneToMany(() => Tag, (tag) => tag.blogPost)
-  @JoinColumn()
+  @ManyToMany(() => Tag, (tag) => tag.blogPosts, {
+    cascade: ['insert'],
+    nullable: false,
+  })
+  @JoinTable()
   tags: Tag[];
 }

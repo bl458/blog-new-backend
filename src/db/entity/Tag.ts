@@ -2,8 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -20,7 +19,6 @@ export class Tag {
   @Column({ nullable: false, unique: true })
   name: string;
 
-  @ManyToOne(() => BlogPost, (blogPost) => blogPost.tags)
-  @JoinColumn()
-  blogPost: BlogPost;
+  @ManyToMany(() => BlogPost, (blogPost) => blogPost.tags)
+  blogPosts: BlogPost[];
 }
