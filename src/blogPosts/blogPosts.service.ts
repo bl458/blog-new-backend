@@ -4,6 +4,7 @@ import { instanceToPlain, plainToClass } from 'class-transformer';
 import { DBConnService } from 'src/db/db.conn.service';
 
 import { BlogPost } from 'src/db/entity/BlogPost';
+import { Tag } from 'src/db/entity/Tag';
 import { UserSession } from 'src/db/entity/UserSession';
 
 import { CreatePostDTO } from 'src/dto/createPost.dto';
@@ -44,6 +45,22 @@ export class BlogPostsService {
     return this.conn.getConn().transaction(async (mgr) => {
       const post = plainToClass(BlogPost, instanceToPlain(createPostDTO));
       post.user = session.user;
+      for (const tagName of new Set(createPostDTO.tags)) {
+        let tag = await mgr.findOne(Tag, {
+          select: ['id'],
+          where: { name: tagName },
+        });
+
+        if (!tag) {
+          tag = new Tag();
+          tag.name = tagName;
+          // No need to save() b/c cascade
+          // await mgr.save(tag);
+        }
+
+        post.tags.push(tag);
+      }
+
       await mgr.save(post);
     });
   }
@@ -82,5 +99,9 @@ export class BlogPostsService {
 
       await mgr.remove(post);
     });
+  }
+
+  private async deleteTag(tag: Tag): Promise<void> {
+    return;
   }
 }
