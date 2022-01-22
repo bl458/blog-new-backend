@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePostDTO {
   @IsNotEmpty()
@@ -12,4 +12,10 @@ export class CreatePostDTO {
   @IsNotEmpty()
   @IsString()
   readonly content: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsNotEmpty({ each: true })
+  @IsString({ each: true })
+  readonly tags: string[];
 }

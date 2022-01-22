@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, ValidateIf } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsNotEmpty,
+  IsString,
+  ValidateIf,
+} from 'class-validator';
 
 export class EditPostDTO {
   @IsNotEmpty()
@@ -7,7 +13,9 @@ export class EditPostDTO {
   @ValidateIf(
     (dto) =>
       dto.title !== undefined ||
-      (dto.titleSub === undefined && dto.content === undefined),
+      (dto.titleSub === undefined &&
+        dto.content === undefined &&
+        dto.tags === undefined),
   )
   @IsNotEmpty()
   @IsString()
@@ -16,7 +24,9 @@ export class EditPostDTO {
   @ValidateIf(
     (dto) =>
       dto.titleSub !== undefined ||
-      (dto.title === undefined && dto.content === undefined),
+      (dto.title === undefined &&
+        dto.content === undefined &&
+        dto.tags === undefined),
   )
   @IsNotEmpty()
   @IsString()
@@ -25,9 +35,24 @@ export class EditPostDTO {
   @ValidateIf(
     (dto) =>
       dto.content !== undefined ||
-      (dto.title === undefined && dto.titleSub === undefined),
+      (dto.title === undefined &&
+        dto.titleSub === undefined &&
+        dto.tags === undefined),
   )
   @IsNotEmpty()
   @IsString()
   readonly content: string;
+
+  @ValidateIf(
+    (dto) =>
+      dto.tags !== undefined ||
+      (dto.title === undefined &&
+        dto.titleSub === undefined &&
+        dto.content === undefined),
+  )
+  @IsArray()
+  @ArrayMinSize(1)
+  @IsNotEmpty({ each: true })
+  @IsString({ each: true })
+  readonly tags: string[];
 }
