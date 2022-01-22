@@ -27,11 +27,11 @@ export class BlogPostsService {
           'blogPost.content',
         ])
         .orderBy('blogPost.createdAt', 'DESC')
-        .cache('post_cache', PostsService.CACHE_DURATION)
+        .cache('post_cache', BlogPostsService.CACHE_DURATION)
         .getMany();
 
-      const pageStart = pageNo * PostsService.PAGE_SIZE;
-      const pageEnd = (pageNo + 1) * PostsService.PAGE_SIZE;
+      const pageStart = pageNo * BlogPostsService.PAGE_SIZE;
+      const pageEnd = (pageNo + 1) * BlogPostsService.PAGE_SIZE;
       return posts.slice(pageStart, pageEnd);
     });
   }
