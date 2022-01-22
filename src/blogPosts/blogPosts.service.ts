@@ -10,7 +10,7 @@ import { CreatePostDTO } from 'src/dto/createPost.dto';
 import { EditPostDTO } from 'src/dto/editPost.dto';
 
 @Injectable()
-export class PostsService {
+export class BlogPostsService {
   static CACHE_DURATION = 86400000; //1 day
   static PAGE_SIZE = 5;
 

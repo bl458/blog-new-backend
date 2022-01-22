@@ -11,7 +11,7 @@ import {
 
 import { UsersGuard } from './users.guard';
 
-import { PostsService } from '../posts/posts.service';
+import { BlogPostsService } from '../blogPosts/blogPosts.service';
 
 import { UserSession } from 'src/db/entity/UserSession';
 
@@ -20,10 +20,11 @@ import { EditPostDTO } from 'src/dto/editPost.dto';
 
 @UseGuards(UsersGuard)
 @Controller()
-export class UsersPostsController {
-  constructor(private pService: PostsService) {}
+export class UsersBlogPostsController {
+  constructor(private pService: BlogPostsService) {}
 
-  @Post('users/posts')
+  //TBI tag
+  @Post('users/blog-posts')
   async createPost(
     @Session() session: UserSession,
     @Body('post') createPostDTO: CreatePostDTO,
@@ -31,8 +32,8 @@ export class UsersPostsController {
     return this.pService.doCreatePost(session, createPostDTO);
   }
 
-  //TBI post's tag
-  @Put('users/posts')
+  //TBI tag
+  @Put('users/blog-posts')
   async editPost(
     @Session() session: UserSession,
     @Body('post') editPostDTO: EditPostDTO,
@@ -40,7 +41,7 @@ export class UsersPostsController {
     return this.pService.doEditPost(session, editPostDTO);
   }
 
-  @Delete('users/posts/:id')
+  @Delete('users/blog-posts/:id')
   async deletePost(
     @Session() session: UserSession,
     @Param('id') id: string,
