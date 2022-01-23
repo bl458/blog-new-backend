@@ -7,8 +7,8 @@ import { BlogPost } from 'src/db/entity/BlogPost';
 import { Tag } from 'src/db/entity/Tag';
 import { UserSession } from 'src/db/entity/UserSession';
 
-import { CreatePostDTO } from 'src/dto/createPost.dto';
-import { EditPostDTO } from 'src/dto/editPost.dto';
+import { CreateBlogPostDTO } from 'src/dto/createBlogPost.dto';
+import { EditBlogPostDTO } from 'src/dto/editBlogPost.dto';
 
 @Injectable()
 export class BlogPostsService {
@@ -39,13 +39,13 @@ export class BlogPostsService {
 
   async doCreatePost(
     session: UserSession,
-    createPostDTO: CreatePostDTO,
+    createBlogPostDTO: CreateBlogPostDTO,
   ): Promise<void> {
     await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
-      const post = plainToClass(BlogPost, instanceToPlain(createPostDTO));
+      const post = plainToClass(BlogPost, instanceToPlain(createBlogPostDTO));
       post.user = session.user;
-      for (const tagName of new Set(createPostDTO.tags)) {
+      for (const tagName of new Set(createBlogPostDTO.tags)) {
         let tag = await mgr.findOne(Tag, {
           select: ['id'],
           where: { name: tagName },
@@ -67,20 +67,20 @@ export class BlogPostsService {
 
   async doEditPost(
     session: UserSession,
-    editPostDTO: EditPostDTO,
+    editBlogPostDTO: EditBlogPostDTO,
   ): Promise<void> {
     await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
       let post = await mgr.findOne(BlogPost, {
         select: ['id'],
-        where: { id: editPostDTO.id, user: session.user },
+        where: { id: editBlogPostDTO.id, user: session.user },
       });
 
       if (!post) {
         throw new BadRequestException('no post id with this user');
       }
 
-      post = Object.assign(post, instanceToPlain(editPostDTO));
+      post = Object.assign(post, instanceToPlain(editBlogPostDTO));
       await mgr.save(post);
     });
   }

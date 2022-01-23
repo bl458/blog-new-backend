@@ -1,6 +1,6 @@
 import { ArrayMinSize, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreatePostDTO {
+export class CreateBlogPostDTO {
   @IsNotEmpty()
   @IsString()
   readonly title: string;

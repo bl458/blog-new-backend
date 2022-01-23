@@ -15,8 +15,8 @@ import { BlogPostsService } from '../blogPosts/blogPosts.service';
 
 import { UserSession } from 'src/db/entity/UserSession';
 
-import { CreatePostDTO } from 'src/dto/createPost.dto';
-import { EditPostDTO } from 'src/dto/editPost.dto';
+import { CreateBlogPostDTO } from 'src/dto/createBlogPost.dto';
+import { EditBlogPostDTO } from 'src/dto/editBlogPost.dto';
 
 @UseGuards(UsersGuard)
 @Controller()
@@ -27,18 +27,18 @@ export class UsersBlogPostsController {
   @Post('users/blog-posts')
   async createPost(
     @Session() session: UserSession,
-    @Body('post') createPostDTO: CreatePostDTO,
+    @Body('post') createBlogPostDTO: CreateBlogPostDTO,
   ): Promise<void> {
-    return this.pService.doCreatePost(session, createPostDTO);
+    return this.pService.doCreatePost(session, createBlogPostDTO);
   }
 
   //TBI tag
   @Put('users/blog-posts')
   async editPost(
     @Session() session: UserSession,
-    @Body('post') editPostDTO: EditPostDTO,
+    @Body('post') editBlogPostDTO: EditBlogPostDTO,
   ): Promise<void> {
-    return this.pService.doEditPost(session, editPostDTO);
+    return this.pService.doEditPost(session, editBlogPostDTO);
   }
 
   @Delete('users/blog-posts/:id')

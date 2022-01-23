@@ -6,7 +6,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 
-export class EditPostDTO {
+export class EditBlogPostDTO {
   @IsNotEmpty()
   readonly id: string;
 
