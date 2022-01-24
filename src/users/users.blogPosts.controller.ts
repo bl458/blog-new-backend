@@ -38,7 +38,7 @@ export class UsersBlogPostsController {
     @Session() session: UserSession,
     @Body('post') editBlogPostDTO: EditBlogPostDTO,
   ): Promise<void> {
-    return this.pService.doEditPost(session, editBlogPostDTO);
+    return this.pService.doEditPost(editBlogPostDTO);
   }
 
   @Delete('users/blog-posts/:id')
@@ -46,6 +46,6 @@ export class UsersBlogPostsController {
     @Session() session: UserSession,
     @Param('id') id: string,
   ): Promise<void> {
-    return this.pService.doDeletePost(session, id);
+    return this.pService.doDeletePost(id);
   }
 }

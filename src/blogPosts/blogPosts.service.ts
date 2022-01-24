@@ -10,6 +10,7 @@ import { UserSession } from 'src/db/entity/UserSession';
 import { CreateBlogPostDTO } from 'src/dto/createBlogPost.dto';
 import { EditBlogPostDTO } from 'src/dto/editBlogPost.dto';
 
+//TBI refactor repeated tag-related ops into private helpers
 @Injectable()
 export class BlogPostsService {
   static CACHE_DURATION = 86400000; //1 day
@@ -33,6 +34,7 @@ export class BlogPostsService {
 
       const pageStart = pageNo * BlogPostsService.PAGE_SIZE;
       const pageEnd = (pageNo + 1) * BlogPostsService.PAGE_SIZE;
+      //TBI use skip() in querybuilder instead of slice()
       return posts.slice(pageStart, pageEnd);
     });
   }
@@ -65,43 +67,71 @@ export class BlogPostsService {
     });
   }
 
-  async doEditPost(
-    session: UserSession,
-    editBlogPostDTO: EditBlogPostDTO,
-  ): Promise<void> {
+  async doEditPost(editBlogPostDTO: EditBlogPostDTO): Promise<void> {
     await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
       let post = await mgr.findOne(BlogPost, {
         select: ['id'],
-        where: { id: editBlogPostDTO.id, user: session.user },
+        where: { id: editBlogPostDTO.id },
+        relations: ['tags', 'tags.blogPosts'],
       });
 
       if (!post) {
         throw new BadRequestException('no post id with this user');
       }
 
-      post = Object.assign(post, instanceToPlain(editBlogPostDTO));
+      const newTagNames = new Set(editBlogPostDTO.tags);
+      post = Object.assign(
+        post,
+        instanceToPlain(editBlogPostDTO, { excludePrefixes: ['tags'] }),
+      );
+      if (newTagNames.size > 0) {
+        for (const tag of post.tags) {
+          if (!newTagNames.has(tag.name) && tag.blogPosts.length == 1) {
+            await mgr.remove(tag);
+          }
+        }
+
+        post.tags = [];
+        for (const tagName of newTagNames) {
+          let tag = await mgr.findOne(Tag, {
+            select: ['id'],
+            where: { name: tagName },
+          });
+
+          if (!tag) {
+            tag = new Tag();
+            tag.name = tagName;
+          }
+
+          post.tags.push(tag);
+        }
+      }
+
       await mgr.save(post);
     });
   }
 
-  async doDeletePost(session: UserSession, id: string): Promise<void> {
+  async doDeletePost(id: string): Promise<void> {
     await this.conn.getConn().queryResultCache.remove(['post_cache']);
     return this.conn.getConn().transaction(async (mgr) => {
       const post = await mgr.findOne(BlogPost, {
         select: ['id'],
-        where: { id, user: session.user },
+        where: { id },
+        relations: ['tags', 'tags.blogPosts'],
       });
 
       if (!post) {
         throw new BadRequestException('no post id with this user');
       }
 
+      for (const tag of post.tags) {
+        if (tag.blogPosts.length == 1) {
+          await mgr.remove(tag);
+        }
+      }
+
       await mgr.remove(post);
     });
-  }
-
-  private async deleteTag(tag: Tag): Promise<void> {
-    return;
   }
 }
