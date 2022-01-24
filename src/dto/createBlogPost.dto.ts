@@ -13,6 +13,7 @@ export class CreateBlogPostDTO {
   @IsString()
   readonly content: string;
 
+  //TBI Transform to set
   @IsArray()
   @ArrayMinSize(1)
   @IsNotEmpty({ each: true })

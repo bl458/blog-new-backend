@@ -10,6 +10,7 @@ import { TokenPipe } from 'src/pipes/TokenPipe';
 export class UsersSessionController {
   constructor(private uSService: UsersSessionService) {}
 
+  //TBI think of way to elegantly refactor: use one pipe or use dto
   @Post('users/sessions')
   async login(
     @Body('email', EmailPipe) email: string,

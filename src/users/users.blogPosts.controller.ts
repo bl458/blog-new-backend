@@ -23,7 +23,6 @@ import { EditBlogPostDTO } from 'src/dto/editBlogPost.dto';
 export class UsersBlogPostsController {
   constructor(private pService: BlogPostsService) {}
 
-  //TBI tag
   @Post('users/blog-posts')
   async createPost(
     @Session() session: UserSession,
@@ -32,7 +31,6 @@ export class UsersBlogPostsController {
     return this.pService.doCreatePost(session, createBlogPostDTO);
   }
 
-  //TBI tag
   @Put('users/blog-posts')
   async editPost(
     @Session() session: UserSession,

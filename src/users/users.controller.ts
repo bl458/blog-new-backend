@@ -11,6 +11,7 @@ import { PasswordPipe } from 'src/pipes/PasswordPipe';
 export class UsersController {
   constructor(private uService: UsersService) {}
 
+  //TBI think of way to elegantly refactor: use one pipe or use dto
   @Post('users')
   async signup(
     @Body('email', EmailPipe) email: string,

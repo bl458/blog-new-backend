@@ -43,6 +43,7 @@ export class EditBlogPostDTO {
   @IsString()
   readonly content: string;
 
+  //TBI Transform to set
   @ValidateIf(
     (dto) =>
       dto.tags !== undefined ||
