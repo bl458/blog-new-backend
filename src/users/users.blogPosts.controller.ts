@@ -33,17 +33,13 @@ export class UsersBlogPostsController {
 
   @Put('users/blog-posts')
   async editPost(
-    @Session() session: UserSession,
     @Body('post') editBlogPostDTO: EditBlogPostDTO,
   ): Promise<void> {
     return this.pService.doEditPost(editBlogPostDTO);
   }
 
   @Delete('users/blog-posts/:id')
-  async deletePost(
-    @Session() session: UserSession,
-    @Param('id') id: string,
-  ): Promise<void> {
+  async deletePost(@Param('id') id: string): Promise<void> {
     return this.pService.doDeletePost(id);
   }
 }
