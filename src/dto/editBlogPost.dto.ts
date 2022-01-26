@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   ArrayMinSize,
   IsArray,
@@ -7,6 +8,11 @@ import {
 } from 'class-validator';
 
 export class EditBlogPostDTO {
+  @Exclude({ toPlainOnly: true })
+  get tagsSet(): Set<string> {
+    return new Set(this.tags);
+  }
+
   @IsNotEmpty()
   readonly id: string;
 
@@ -55,5 +61,6 @@ export class EditBlogPostDTO {
   @ArrayMinSize(1)
   @IsNotEmpty({ each: true })
   @IsString({ each: true })
-  readonly tags: string[];
+  @Exclude({ toPlainOnly: true })
+  private tags: string[];
 }

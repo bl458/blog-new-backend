@@ -47,7 +47,8 @@ export class BlogPostsService {
     return this.conn.getConn().transaction(async (mgr) => {
       const post = plainToClass(BlogPost, instanceToPlain(createBlogPostDTO));
       post.user = session.user;
-      for (const tagName of new Set(createBlogPostDTO.tags)) {
+      post.tags = [];
+      for (const tagName of createBlogPostDTO.tagsSet) {
         let tag = await mgr.findOne(Tag, {
           select: ['id'],
           where: { name: tagName },
@@ -80,20 +81,17 @@ export class BlogPostsService {
         throw new BadRequestException('no post id with this user');
       }
 
-      const newTagNames = new Set(editBlogPostDTO.tags);
-      post = Object.assign(
-        post,
-        instanceToPlain(editBlogPostDTO, { excludePrefixes: ['tags'] }),
-      );
-      if (newTagNames.size > 0) {
+      const newTagNameSet = editBlogPostDTO.tagsSet;
+      post = Object.assign(post, instanceToPlain(editBlogPostDTO));
+      if (newTagNameSet.size > 0) {
         for (const tag of post.tags) {
-          if (!newTagNames.has(tag.name) && tag.blogPosts.length == 1) {
+          if (!newTagNameSet.has(tag.name) && tag.blogPosts.length == 1) {
             await mgr.remove(tag);
           }
         }
 
         post.tags = [];
-        for (const tagName of newTagNames) {
+        for (const tagName of newTagNameSet) {
           let tag = await mgr.findOne(Tag, {
             select: ['id'],
             where: { name: tagName },
